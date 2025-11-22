@@ -4,9 +4,15 @@ from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_classic.chains import create_retrieval_chain
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_classic.chains import (
+    create_retrieval_chain,
+    create_history_aware_retriever,
+)
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
+import streamlit as st
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+from langchain_core.runnables import RunnableWithMessageHistory
 
 load_dotenv()
 
@@ -31,16 +37,31 @@ prompt_template = ChatPromptTemplate(
          Limit your response to three concise sentences.
          {context}""",
         ),
+        MessagesPlaceholder(variable_name="chat_history"),
         ("human", "{input}"),
     ]
 )
 
+history_aware_retriever = create_history_aware_retriever(
+    llm, retriever, prompt_template
+)
 qa_chain = create_stuff_documents_chain(llm, prompt_template)
-rag_chain = create_retrieval_chain(retriever, qa_chain)
+rag_chain = create_retrieval_chain(history_aware_retriever, qa_chain)
 
-print("Chat with Document")
-question = input("Your Question")
+history_for_chain = StreamlitChatMessageHistory()
+
+chain_with_history = RunnableWithMessageHistory(
+    rag_chain,
+    lambda session_id: history_for_chain,
+    input_messages_key="input",
+    history_messages_key="chat_history",
+)
+
+st.write("Chat with Document")
+question = st.text_input("Your Question")
 
 if question:
-    response = rag_chain.invoke({"input":question})
-    print(response['answer'])
+    response = chain_with_history.invoke(
+        {"input": question}, {"configurable": {"session_id": "abc123"}}
+    )
+    st.write(response["answer"])

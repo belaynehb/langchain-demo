@@ -1,37 +1,33 @@
-# Example of more than two place holder
 import os
+from langchain_openai.chat_models import ChatOpenAI
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
-import streamlit as st
-
-
-# from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import PromptTemplate
+import streamlit as st
 
 load_dotenv()
 
-api_key = os.getenv("OPENAI_API_KEY")
-llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
-# llm=ChatOllama(model="mistral:latest")
+API_KEY = os.getenv("OPENAI_API_KEY")
+llm = ChatOpenAI(model="gpt-4o", api_key=API_KEY)
 prompt_template = PromptTemplate(
     input_variables=["city", "month", "language", "budget"],
     template="""
-       Welcome to the {city} travel guide!
+        Welcome to the {city} travel guide!
         If you're visiting in {month}, here's what you can do:
         1. Must-visit attractions.
         2. Local cuisine you must try.
         3. Useful phrases in {language}.
         4. Tips for traveling on a {budget} budget.
+
         Enjoy your trip!
- 
     """,
 )
+
 st.title("Travel Guide")
 
-city = st.text_input("Enter the City:")
-month = st.text_input("Enter the Month of travel")
-language = st.text_input("Enter the Language")
-budget = st.selectbox("Travel Budget", ["Low", "Medium", "High"])
+city = st.text_input("Enter the city:")
+month = st.text_input("Enter the month of travel")
+language = st.text_input("Enter the language")
+budget = st.selectbox("Enter your budget", ["Low", "Medium", "High"])
 
 if city and month and language and budget:
     response = llm.invoke(

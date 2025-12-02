@@ -1,26 +1,41 @@
-import os
+# import os
 
+# from dotenv import load_dotenv
+# from langchain_openai import ChatOpenAI
+
+# load_dotenv()
+
+# API_KEY = os.getenv("OPENAI_API_KEY")
+# llm = ChatOpenAI(model="gpt-4o", api_key=API_KEY)
+
+# question = input("Enter the question: \n")
+# response = llm.invoke(question)
+# print(response.content)
+
+import os
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 
 load_dotenv()
+from langchain_openai import ChatOpenAI
 
-API_KEY = os.getenv("OPENAI_API_KEY")
-llm = ChatOpenAI(model="gpt-4o", api_key=API_KEY)
+api_key = os.getenv("OPENAI_API_KEY")
+llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
 
-question = input("Enter the question: \n")
+question = input("Write your question here \n")
 response = llm.invoke(question)
 print(response.content)
 
-# import os
-# from dotenv import load_dotenv
 
-# load_dotenv()
+# import os
+
+# from dotenv import load_dotenv
 # from langchain_openai import ChatOpenAI
 
-# api_key = os.getenv("OPENAI_API_KEY")
-# llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
+# load_dotenv()
 
-# question = input("Write your question here \n")
+# API_KEY = os.getenv("GOOGLE_API_KEY")
+# llm = ChatOpenAI(model="gemini", api_key=API_KEY)
+
+# question = input("Enter the question: \n")
 # response = llm.invoke(question)
 # print(response.content)

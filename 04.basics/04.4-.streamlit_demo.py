@@ -24,36 +24,36 @@
 
 ## STREAMLIT EXAMPLE WITH OPENAI
 
-# import os
-# from langchain_openai import ChatOpenAI
-# from dotenv import load_dotenv
-# import streamlit as st
+import os
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+import streamlit as st
 
-# load_dotenv()
+load_dotenv()
 
 
-# api_key = os.getenv("OPENAI_API_KEY")
-# llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
+api_key = os.getenv("OPENAI_API_KEY")
+llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
 
-# st.title("AI chat")
+st.title("AI chat")
 
-# question = st.text_input("Enter your question here:")
-# response = llm.invoke(question)
+question = st.text_input("Enter your question here:")
+response = llm.invoke(question)
 
-# if question:
-#     st.write(response.content)
+if question:
+    st.write(response.content)
 
 
 ## STEAMLIT EXAMPLE WITH OPEN SOURCE
-import streamlit as st
-from langchain_community.chat_models import ChatOllama
+# import streamlit as st
+# from langchain_community.chat_models import ChatOllama
 
-llm = ChatOllama(model="gemma:2b")
+# llm = ChatOllama(model="gemma:2b")
 
-st.title("Your gemma chat app")
-question = st.text_input("Enter your question:")
+# st.title("test getta testing")
+# question = st.text_input("Enter your question:")
 
 
-if question:
-    response = llm.invoke(question)
-    st.write(response.content)
+# if question:
+#     response = llm.invoke(question)
+#     st.write(response.content)
